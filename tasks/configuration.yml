@@ -34,6 +34,8 @@
   template:
     src: "{{ item.value.template | default(nginx_default_site_template) }}"
     dest: "{{ nginx_conf_dir }}/sites-available/{{ item.key }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_dict: "{{ nginx_sites }}"
   when: item.key not in nginx_remove_sites
   notify:
@@ -54,6 +56,8 @@
   template:
     src: "{{ item.value.template | default('config.conf.j2') }}"
     dest: "{{ nginx_conf_dir }}/conf.d/{{ item.key }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_dict: "{{ nginx_configs }}"
   notify:
     - reload nginx
@@ -62,6 +66,8 @@
   template:
     src: config.conf.j2
     dest: "{{ nginx_conf_dir }}/snippets/{{ item.key }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_dict: "{{ nginx_snippets }}"
   notify:
     - reload nginx
@@ -70,6 +76,8 @@
   template:
     src: "{{ item.value.template | default('config_stream.conf.j2') }}"
     dest: "{{ nginx_conf_dir }}/conf.d/stream/{{ item.key }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_dict: "{{ nginx_stream_configs }}"
   notify:
     - reload nginx
@@ -82,6 +90,8 @@
   template:
     src: module.conf.j2
     dest: "{{ nginx_conf_dir }}/modules-available/{{ item }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_items: "{{ nginx_module_configs }}"
   ignore_errors: "{{ ansible_check_mode }}"
   notify:
@@ -95,6 +105,8 @@
     state: link
     src: "/usr/share/nginx/modules/{{ item }}.conf"
     dest: "{{ nginx_conf_dir }}/modules-available/{{ item }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_items: "{{ nginx_module_configs }}"
   ignore_errors: "{{ ansible_check_mode }}"
   notify:
@@ -109,6 +121,8 @@
     state: link
     src: "/usr/share/nginx/modules-available/{{ item }}.conf"
     dest: "{{ nginx_conf_dir }}/modules-available/{{ item }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_items: "{{ nginx_module_configs }}"
   ignore_errors: "{{ ansible_check_mode }}"
   notify:
@@ -136,6 +150,8 @@
     state: link
     src: "{{ nginx_conf_dir }}/modules-available/{{ item }}.conf"
     dest: "{{ nginx_conf_dir }}/modules-enabled/{{ item }}.conf"
+    mode: 0640
+    group: "{{ nginx_group }}"
   with_items: "{{ nginx_module_configs }}"
   when: (item not in nginx_remove_modules) and (item not in nginx_disabled_modules)
   ignore_errors: "{{ ansible_check_mode }}"
