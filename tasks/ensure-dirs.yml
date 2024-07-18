@@ -18,8 +18,16 @@
 
 - name: Ensure log directory exist
   file:
-    path: "{{ nginx_log_dir }}"
-    state: directory
+    path:  "{{ nginx_log_dir }}"
     owner: "{{ nginx_log_user }}"
     group: "{{ nginx_log_group }}"
-    mode: "{{ nginx_log_perm }}"
+    mode:  "{{ nginx_log_perm }}"
+    state: "directory"
+
+- name: Ensure cache directory exist
+  file:
+    path:  "{{ nginx_cache_dir }}"
+    owner: "{{ nginx_cache_user }}"
+    group: "{{ nginx_cache_group }}"
+    mode:  "{{ nginx_cache_perm }}"
+    state: "directory"

@@ -31,6 +31,11 @@ nginx_log_group: "{% if ansible_os_family == 'Debian' %}adm{% else %}{{nginx_gro
 nginx_log_perm: 0755
 nginx_error_log_level: "error"
 
+nginx_cache_dir: "/var/cache/nginx"
+nginx_cache_user: "{{ nginx_user }}"
+nginx_cache_group: "root"
+nginx_cache_perm: 0755
+
 nginx_conf_user: root
 nginx_conf_group: root
 nginx_dir_perm: 0755
