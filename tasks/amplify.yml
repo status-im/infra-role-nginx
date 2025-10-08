@@ -8,42 +8,42 @@
   tags: [packages]
 
 - name: Install Amplify Agent if not installed
+  when: amplify_agent_installed.failed|bool
+  tags: [configuration, packages]
   block:
     - name: Download Amplify Agent script
       get_url:
-        url: "{{ nginx_amplify_script_url }}"
-        dest: "{{ nginx_amplify_script_path }}"
+        url: '{{ nginx_amplify_script_url }}'
+        dest: '{{ nginx_amplify_script_path }}'
+        mode: '0o644'
 
     - name: Run Amplify Agent install.sh script
-      command: "sh /tmp/install-amplify-agent.sh -y"
+      command: 'sh /tmp/install-amplify-agent.sh -y'
       environment:
-        API_KEY: "{{ nginx_amplify_api_key }}"
+        API_KEY: '{{ nginx_amplify_api_key }}'
       become: true
       become_user: root
-      become_method: sudo
+      become_method: ansible.builtin.sudo
 
     - name: Remove installation script
       file:
-        path: "{{ nginx_amplify_script_path }}"
+        path: '{{ nginx_amplify_script_path }}'
         state: absent
 
-  when: amplify_agent_installed.failed|bool
-  tags: [configuration, packages]
-
 - name: Update Amplify Agent if already installed and update flag is enabled
-  package:
-    name: nginx-amplify-agent
-    state: latest
   when:
     - not amplify_agent_installed.failed|bool
     - nginx_amplify_update_agent|bool
   tags:
     - packages
-    - skip_ansible_lint  # latest package version
+    - skip_ansible_lint # latest package version
+  package:
+    name: nginx-amplify-agent
+    state: latest
 
 - name: Verify Amplify agent is up and running
+  tags: [service]
   service:
     name: amplify-agent
     state: started
     enabled: true
-  tags: [service]

@@ -1,34 +1,39 @@
 ---
-
-- name: restart nginx
-  debug: msg="checking config first"
-  changed_when: True
+- name: Restart nginx
+  debug:
+    msg: 'checking config first'
+  changed_when: true
   notify:
-    - check nginx configuration
-    - restart nginx - after config check
+    - Check nginx configuration
+    - Restart nginx - after config check
 
-- name: reload nginx
-  debug: msg="checking config first"
-  changed_when: True
+- name: Reload nginx
+  debug:
+    msg: 'checking config first'
+  changed_when: true
   notify:
-    - check nginx configuration
-    - reload nginx - after config check
+    - Check nginx configuration
+    - Reload nginx - after config check
 
-- name: check nginx configuration
-  command: "{{ nginx_binary_name }} -t -c {{ nginx_conf_dir }}/nginx.conf"
-  register: result
-  changed_when: "result.rc != 0"
-  check_mode: no
+- name: Check nginx configuration
+  command: '{{ nginx_binary_name }} -t -c {{ nginx_conf_dir }}/nginx.conf'
+  register: 'result'
+  changed_when: 'result.rc != 0'
+  check_mode: false
   when: nginx_installation_type in nginx_installation_types_using_service
 
-- name: restart nginx - after config check
-  service: name={{ nginx_service_name }} state=restarted
+- name: Restart nginx - after config check
+  service:
+    name: '{{ nginx_service_name }}'
+    state: 'restarted'
   when: nginx_installation_type in nginx_installation_types_using_service
-        and nginx_daemon_mode == "on"
+        and nginx_daemon_mode == 'on'
         and nginx_start_service
 
-- name: reload nginx - after config check
-  service: name={{ nginx_service_name }} state=reloaded
+- name: Reload nginx - after config check
+  service:
+    name: '{{ nginx_service_name }}'
+    state: 'reloaded'
   when: nginx_installation_type in nginx_installation_types_using_service
-        and nginx_daemon_mode == "on"
+        and nginx_daemon_mode == 'on'
         and nginx_start_service

@@ -1,35 +1,15 @@
 ---
 galaxy_info:
-  author: "DAUPHANT Julien"
+  author: 'DAUPHANT Julien'
   description: Ansible role to install Nginx.
   license: BSD
-  min_ansible_version: 2.4
+  min_ansible_version: '2.17'
   platforms:
-    - name: EL
-      versions:
-        - all
-    - name: Fedora
-      versions:
-        - all
-    - name: opensuse
-      versions:
-        - all
     - name: Ubuntu
       versions:
         - all
     - name: Debian
       versions:
         - all
-    - name: FreeBSD
-      versions:
-        - 10.0
-        - 10.1
-        - 10.2
-        - 10.3
-        - 11.0
-        - 11.1
-    - name: SmartOS
-  galaxy_tags:
-    - web
-allow_duplicates: yes
+
 dependencies: []

@@ -7,7 +7,7 @@
     - ['sites-enabled', 'sites-available']
     - "{{ nginx_remove_sites }}"
   notify:
-    - reload nginx
+    - Reload nginx
 
 - name: Remove unwanted conf
   file:
@@ -15,7 +15,7 @@
     state: absent
   with_items: "{{ nginx_remove_configs }}"
   notify:
-    - reload nginx
+    - Reload nginx
 
 - name: Remove unwanted snippets
   file:
@@ -23,7 +23,7 @@
     state: absent
   with_items: "{{ nginx_remove_snippets }}"
   notify:
-    - reload nginx
+    - Reload nginx
 
 - name: Remove unwanted auth_basic_files
   file:
@@ -31,4 +31,4 @@
     state: absent
   with_items: "{{ nginx_remove_auth_basic_files }}"
   notify:
-    - reload nginx
+    - Reload nginx

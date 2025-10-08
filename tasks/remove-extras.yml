@@ -2,7 +2,7 @@
 - name: Find enabled sites
   shell: ls -1 {{ nginx_conf_dir }}/sites-enabled || true
   register: enabled_sites
-  changed_when: False
+  changed_when: false
 
 - name: Disable unmanaged sites
   file:
@@ -12,12 +12,12 @@
   # 'item.conf' => 'item'
   when: item[:-5] not in nginx_sites.keys()
   notify:
-    - reload nginx
+    - Reload nginx
 
 - name: Find config files
   shell: find {{ nginx_conf_dir }}/conf.d -maxdepth 1 -type f -name '*.conf' -exec basename {} \;
   register: config_files
-  changed_when: False
+  changed_when: false
 
 - name: Remove unmanaged config files
   file:
@@ -27,4 +27,4 @@
   # 'item.conf' => 'item'
   when: item[:-5] not in nginx_configs.keys()
   notify:
-    - reload nginx
+    - Reload nginx
